@@ -24,7 +24,7 @@ A robust Node.js backend API for a multi-vendor eCommerce platform with role-bas
 
 1. **Clone the repository**
    ```bash
-   git clone git@github.com:Utkarsh8867/Authentication-System.git
+   git clone git@github.com:prasadkambale181-cmd/Authentication-System.git
    cd Authentication-System
    ```
 
@@ -452,8 +452,8 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-**Utkarsh**
-- GitHub: [@Utkarsh8867](https://github.com/Utkarsh8867)
+**Prasad Kambale**
+- GitHub: [@prasadkambale181-cmd](https://github.com/prasadkambale181-cmd)
 
 ---
 
