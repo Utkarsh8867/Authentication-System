@@ -426,11 +426,22 @@ npm run add-sample-products
 
 ## 🚀 Deployment
 
-1. Set production environment variables
-2. Update CORS origins for your domain
-3. Use a production MongoDB instance
-4. Set NODE_ENV=production
-5. Use PM2 or similar for process management
+For detailed production deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Quick Production Setup:
+1. **Environment**: Copy `.env.production` to `.env` and update values
+2. **Database**: Run `npm run setup-db` for initial setup
+3. **Process Manager**: Use `npm run pm2:start` for production
+4. **Reverse Proxy**: Configure Nginx for SSL and load balancing
+5. **Monitoring**: Use PM2 for process monitoring and auto-restart
+
+### Production Scripts:
+```bash
+npm run prod          # Start in production mode
+npm run pm2:start     # Start with PM2 process manager
+npm run pm2:restart   # Restart PM2 processes
+npm run pm2:stop      # Stop PM2 processes
+```
 
 ---
 

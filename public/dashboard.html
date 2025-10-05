@@ -335,7 +335,8 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:5000';
+        // Dynamic API base URL for production/development
+        const API_BASE = window.location.origin;
 
         const endpoints = [
             {
