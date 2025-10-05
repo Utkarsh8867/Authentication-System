@@ -31,7 +31,7 @@ sudo npm install -g pm2
 ### 3. Clone and Setup Application
 ```bash
 # Clone repository
-git clone git@github.com:prasadkambale181-cmd/Authentication-System.git
+git clone git@github.com:Utkarsh8867/Authentication-System.git
 cd Authentication-System
 
 # Install dependencies
