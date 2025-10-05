@@ -1,0 +1,27 @@
+{
+  "name": "ecommerce-auth-backend",
+  "version": "1.0.0",
+  "description": "Multi-vendor eCommerce authentication backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "create-admin": "node scripts/createAdmin.js",
+    "add-sample-products": "node scripts/addSampleProducts.js",
+    "setup-db": "node scripts/setupDatabase.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "express-rate-limit": "^6.10.0",
+    "express-validator": "^7.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

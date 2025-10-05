@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .request-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .auth-section h3 {
+            margin-bottom: 15px;
+            color: #27ae60;
+        }
+
+        .token-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .endpoints h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .endpoint-group {
+            margin-bottom: 20px;
+        }
+
+        .group-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .endpoint {
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .endpoint:hover {
+            background: #f8f9fa;
+            border-left-color: #3498db;
+        }
+
+        .endpoint.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .GET {
+            background: #27ae60;
+            color: white;
+        }
+
+        .POST {
+            background: #3498db;
+            color: white;
+        }
+
+        .PUT {
+            background: #f39c12;
+            color: white;
+        }
+
+        .DELETE {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .request-form {
+            margin-bottom: 30px;
+        }
+
+        .url-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .method-select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .send-btn {
+            background: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #229954;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .form-section h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .json-input {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .response-section {
+            margin-top: 30px;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .response-body {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 API Testing Dashboard</h1>
+            <p>Test your eCommerce Backend APIs</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="auth-section">
+                    <h3>🔐 Authentication</h3>
+                    <input type="text" id="authToken" class="token-input" placeholder="Paste access token here...">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span id="authStatus">No token</span>
+                        <button onclick="clearToken()" class="btn btn-danger">Clear</button>
+                    </div>
+                </div>
+
+                <div class="endpoints">
+                    <h3>📋 Endpoints</h3>
+                    <div id="endpointsList"></div>
+                </div>
+            </div>
+
+            <div class="request-panel">
+                <div class="request-form">
+                    <div class="url-bar">
+                        <select id="method" class="method-select">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                        <input type="text" id="url" class="url-input" placeholder="http://localhost:5000/health">
+                        <button onclick="sendRequest()" class="send-btn" id="sendBtn">Send</button>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Request Body (JSON)</h4>
+                        <textarea id="requestBody" class="json-input" placeholder='{"key": "value"}'></textarea>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <div class="response-header">
+                        <h4>Response</h4>
+                        <div>
+                            <span id="status" class="status">Ready</span>
+                            <span id="timing" style="margin-left: 10px; color: #7f8c8d;"></span>
+                        </div>
+                    </div>
+                    <div id="responseBody" class="response-body">Click "Send" to make a request...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+
+        const endpoints = [
+            {
+                group: 'Health', items: [
+                    { method: 'GET', path: '/health', name: 'Health Check', auth: false }
+                ]
+            },
+            {
+                group: 'Auth', items: [
+                    { method: 'POST', path: '/auth/register', name: 'Register', auth: false },
+                    { method: 'POST', path: '/auth/login', name: 'Login', auth: false },
+                    { method: 'POST', path: '/auth/refresh', name: 'Refresh Token', auth: false },
+                    { method: 'POST', path: '/auth/logout', name: 'Logout', auth: false }
+                ]
+            },
+            {
+                group: 'Admin', items: [
+                    { method: 'GET', path: '/admin/users', name: 'Get All Users', auth: true }
+                ]
+            },
+            {
+                group: 'Vendor', items: [
+                    { method: 'GET', path: '/vendor/products', name: 'My Products', auth: true },
+                    { method: 'POST', path: '/vendor/products', name: 'Add Product', auth: true },
+                    { method: 'PUT', path: '/vendor/products/ID', name: 'Update Product', auth: true },
+                    { method: 'DELETE', path: '/vendor/products/ID', name: 'Delete Product', auth: true }
+                ]
+            },
+            {
+                group: 'Customer', items: [
+                    { method: 'GET', path: '/customer/products', name: 'Browse Products', auth: true },
+                    { method: 'GET', path: '/customer/products/ID', name: 'Product Details', auth: true }
+                ]
+            }
+        ];
+
+        const samples = {
+            '/auth/register': '{\n  "email": "test@example.com",\n  "password": "password123",\n  "firstName": "John",\n  "lastName": "Doe",\n  "role": "customer"\n}',
+            '/auth/login': '{\n  "email": "test@example.com",\n  "password": "password123"\n}',
+            '/auth/refresh': '{\n  "refreshToken": "your_refresh_token_here"\n}',
+            '/auth/logout': '{\n  "refreshToken": "your_refresh_token_here"\n}',
+            '/vendor/products': '{\n  "name": "Sample Product",\n  "description": "Product description",\n  "price": 99.99,\n  "category": "Electronics",\n  "stock": 10\n}'
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            renderEndpoints();
+            loadToken();
+            document.getElementById('authToken').addEventListener('input', updateAuthStatus);
+        });
+
+        function renderEndpoints() {
+            const container = document.getElementById('endpointsList');
+            container.innerHTML = '';
+
+            endpoints.forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'endpoint-group';
+
+                const title = document.createElement('div');
+                title.className = 'group-title';
+                title.textContent = group.group;
+                groupDiv.appendChild(title);
+
+                group.items.forEach(endpoint => {
+                    const div = document.createElement('div');
+                    div.className = 'endpoint';
+                    div.onclick = () => selectEndpoint(endpoint, div);
+
+                    div.innerHTML = `
+                        <span class="method ${endpoint.method}">${endpoint.method}</span>
+                        ${endpoint.name}
+                        ${endpoint.auth ? ' 🔒' : ''}
+                    `;
+
+                    groupDiv.appendChild(div);
+                });
+
+                container.appendChild(groupDiv);
+            });
+        }
+
+        function selectEndpoint(endpoint, element) {
+            document.querySelectorAll('.endpoint').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('method').value = endpoint.method;
+            document.getElementById('url').value = API_BASE + endpoint.path;
+            document.getElementById('requestBody').value = samples[endpoint.path] || '';
+        }
+
+        function updateAuthStatus() {
+            const token = document.getElementById('authToken').value;
+            const status = document.getElementById('authStatus');
+
+            if (token.trim()) {
+                status.textContent = '✅ Token set';
+                status.style.color = '#27ae60';
+                localStorage.setItem('apiToken', token);
+            } else {
+                status.textContent = '❌ No token';
+                status.style.color = '#e74c3c';
+                localStorage.removeItem('apiToken');
+            }
+        }
+
+        function loadToken() {
+            const saved = localStorage.getItem('apiToken');
+            if (saved) {
+                document.getElementById('authToken').value = saved;
+                updateAuthStatus();
+            }
+        }
+
+        function clearToken() {
+            document.getElementById('authToken').value = '';
+            updateAuthStatus();
+        }
+
+        async function sendRequest() {
+            const method = document.getElementById('method').value;
+            const url = document.getElementById('url').value;
+            const body = document.getElementById('requestBody').value.trim();
+            const token = document.getElementById('authToken').value.trim();
+
+            const sendBtn = document.getElementById('sendBtn');
+            const status = document.getElementById('status');
+            const timing = document.getElementById('timing');
+            const responseBody = document.getElementById('responseBody');
+
+            // Show loading
+            sendBtn.textContent = 'Sending...';
+            sendBtn.classList.add('loading');
+            status.textContent = 'Loading...';
+            status.className = 'status';
+
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const options = {
+                method: method,
+                headers: headers
+            };
+
+            if ((method === 'POST' || method === 'PUT') && body) {
+                try {
+                    JSON.parse(body);
+                    options.body = body;
+                } catch (e) {
+                    status.textContent = 'Invalid JSON';
+                    status.className = 'status status-error';
+                    responseBody.textContent = 'Error: Invalid JSON in request body';
+                    sendBtn.textContent = 'Send';
+                    sendBtn.classList.remove('loading');
+                    return;
+                }
+            }
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(url, options);
+                const endTime = Date.now();
+                const responseText = await response.text();
+
+                timing.textContent = `${endTime - startTime}ms`;
+                status.textContent = `${response.status} ${response.statusText}`;
+                status.className = `status ${response.ok ? 'status-success' : 'status-error'}`;
+
+                try {
+                    const json = JSON.parse(responseText);
+                    responseBody.textContent = JSON.stringify(json, null, 2);
+
+                    // Auto-save token from login
+                    if (url.includes('/auth/login') && json.success && json.data?.tokens?.accessToken) {
+                        document.getElementById('authToken').value = json.data.tokens.accessToken;
+                        updateAuthStatus();
+                        alert('✅ Token automatically saved!');
+                    }
+                } catch (e) {
+                    responseBody.textContent = responseText;
+                }
+
+            } catch (error) {
+                timing.textContent = '';
+                status.textContent = 'Network Error';
+                status.className = 'status status-error';
+                responseBody.textContent = `Error: ${error.message}`;
+            }
+
+            sendBtn.textContent = 'Send';
+            sendBtn.classList.remove('loading');
+        }
+
+        // Keyboard shortcut
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                sendRequest();
+            }
+        });
+    </script>
+</body>
+
+</html>
